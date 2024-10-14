@@ -1,14 +1,15 @@
 """
 @Author: Prayag Bhoir
-@Date: 013-10-2024
+@Date: 13-10-2024
 @Last Modified by: Prayag Bhoir
-@Last Modified time: 13-10-2024
+@Last Modified time: 14-10-2024
 @Title: Email processing - Summarization and Translation using Google Generative AI.
 """
 
 import google.generativeai as genai
 from dotenv import load_dotenv, dotenv_values
 import pandas as pd
+import time
 
 config = dotenv_values()  # Load all variables into a dictionary
 
@@ -37,17 +38,23 @@ def process_emails(input_file, output_file):
         for line in file:
             from_email, to_email, mail_body = line.strip().split(',', 2)
             
-            # Create prompt for summarization and translation
+            # Create prompt for summarization
             summarize_prompt = f"Summarize the following email: {mail_body}"
-            translate_prompt = f"Translate the following email to Hindi: {mail_body}"
 
             # Summarize email body
             summary_response = genai.GenerativeModel("gemini-1.5-flash").generate_content(summarize_prompt)
-            summarized_body = summary_response.text
+            summarized_body = summary_response.text.strip()
 
-            # Translate email body to Hindi
+            time.sleep(2)
+            
+            # Create prompt for translation
+            translate_prompt = f"Convert the following summarize email body in Spanish languange as it is. summarize email: {summarized_body}"
+
+            # Translate email body to Spanish
             translation_response = genai.GenerativeModel("gemini-1.5-flash").generate_content(translate_prompt)
-            translated_body = translation_response.text
+            translated_body = translation_response.text.strip()
+            
+            time.sleep(2)
 
             # Store the result
             results.append({
