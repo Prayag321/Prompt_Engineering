@@ -50,7 +50,7 @@ def process_reviews(input_file, output_file, delimiter="|"):
 
         # Create prompts to identify the product, determine sentiment, Generate the replay
         product_prompt = f"From the following review, can you identify what product it is about in one word: '{review}'? If not clear, say 'Not Confirmed'."
-        sentiment_prompt = f"Tell the sentiment of the following review in positive or negative? If unclear, say 'Neutral'. Review: '{review}'"
+        sentiment_prompt = f"Tell the sentiment of the following review in positive or negative? If unclear, say 'Neutral in one wordS'. Review: '{review}'"
         replay_prompt = f"From the following review, can you replay to the customer in a polite and concise manner. Review: '{review}'"
 
         # Request for product name
@@ -72,8 +72,8 @@ def process_reviews(input_file, output_file, delimiter="|"):
 
         results.append({
             'actual_review': review,
-            'product_name': product_name if product_name else "Not Confirmed",
-            'sentiment': sentiment if sentiment in ['positive', 'negative'] else "Not Confirmed",
+            'product_name': product_name,
+            'sentiment': sentiment,
             'reply_to_user': user_reply
         })
 
